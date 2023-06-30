@@ -3,16 +3,18 @@
 // @namespace    http://github.com/hfuller/user-js
 // @updateURL    https://github.com/hfuller/user-js/raw/master/anquickadd.user.js
 // @downloadURL  https://github.com/hfuller/user-js/raw/master/anquickadd.user.js
-// @version      2
+// @version      3
 // @description  Make it easy to add a bunch of activists at once, such as when transcribing a sign up sheet
 // @author       Hunter Fuller <hfuller@pixilic.com>
-// @match        https://actionnetwork.org/user_search/group/*/*
+// @match        https://actionnetwork.org/user_search/group/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=actionnetwork.org
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
+
+    console.log("welcome to my usered script");
 
     if ( document.location.href.endsWith("/new_user") ) {
         console.log("focusing");
@@ -34,11 +36,43 @@
         //console.log(breadcrumbs);
         //breadcrumbs[breadcrumbs.length-1].href = "new_user";
         //breadcrumbs[breadcrumbs.length-1].innerHTML = "Add Activist";
-        let el = breadcrumbs[breadcrumbs.length-1].cloneNode();
-        el.href = "new_user";
-        el.innerHTML = "Add Activist";
-        breadcrumbs[breadcrumbs.length-1].parentElement.insertBefore(el, breadcrumbs[breadcrumbs.length-1].nextSibling);
+        let newcrumb = breadcrumbs[breadcrumbs.length-1].cloneNode();
+        newcrumb.href = "new_user";
+        newcrumb.innerHTML = "Add Activist";
+        breadcrumbs[breadcrumbs.length-1].parentElement.insertBefore(newcrumb, breadcrumbs[breadcrumbs.length-1].nextSibling);
 
+        let search = document.getElementById('search_user_field');
+        console.log(search);
+        if ( search ) {
+            console.log('focusing');
+            search.focus();
+        }
+
+        for ( let button of document.getElementsByClassName("button") ) {
+            if ( button.innerHTML == "View Record" ) {
+                let newbutton = document.createElement('a');
+                newbutton.innerHTML = "Edit";
+                newbutton.href = button.href + "?gotoedit";
+                //newbutton.classList = "button"; //infinite loop because getElementsByClassName is being lazily evaluated somehow?!?!?!?!!
+                newbutton.classList = "tempbutton";
+                button.parentElement.insertBefore(newbutton, button);
+            }
+        }
+        window.setInterval(function() {
+            for ( let button of document.getElementsByClassName("tempbutton") ) {
+                button.classList = "button";
+            }
+        }, 200);
+
+        if ( document.title.startsWith("View Activist") && window.location.search == "?gotoedit" ) {
+            for ( let el of document.getElementsByClassName("button") ) {
+                if ( el.innerHTML == "Edit Activist" ) {
+                    document.getElementsByTagName("body")[0].style.display = "none";
+                    history.replaceState(null, "", window.location.pathname);
+                    el.click();
+                }
+            }
+        }
     }
 
 })();
