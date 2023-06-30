@@ -3,7 +3,7 @@
 // @namespace    http://github.com/hfuller/user-js
 // @updateURL    https://github.com/hfuller/user-js/raw/master/anquickadd.user.js
 // @downloadURL  https://github.com/hfuller/user-js/raw/master/anquickadd.user.js
-// @version      1
+// @version      2
 // @description  Make it easy to add a bunch of activists at once, such as when transcribing a sign up sheet
 // @author       Hunter Fuller <hfuller@pixilic.com>
 // @match        https://actionnetwork.org/user_search/group/*/*
@@ -29,10 +29,16 @@
         console.log("Populating source code from local storage");
         document.getElementById('source_code_source_code').value = localStorage.getItem("hfuller_sourcecode");
     } else if ( document.location.href.includes("/user_search/") ) {
-        console.log("Fixing up Add Activist link");
+        console.log("Adding Add Activist link to breadcrumbs");
         let breadcrumbs = document.getElementsByClassName("step_complete");
-        breadcrumbs[breadcrumbs.length-1].href = "new_user";
-        breadcrumbs[breadcrumbs.length-1].innerHTML = "Add Activist";
+        //console.log(breadcrumbs);
+        //breadcrumbs[breadcrumbs.length-1].href = "new_user";
+        //breadcrumbs[breadcrumbs.length-1].innerHTML = "Add Activist";
+        let el = breadcrumbs[breadcrumbs.length-1].cloneNode();
+        el.href = "new_user";
+        el.innerHTML = "Add Activist";
+        breadcrumbs[breadcrumbs.length-1].parentElement.insertBefore(el, breadcrumbs[breadcrumbs.length-1].nextSibling);
+
     }
 
 })();
