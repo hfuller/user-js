@@ -3,7 +3,7 @@
 // @namespace    http://github.com/hfuller/user-js
 // @updateURL    https://github.com/hfuller/user-js/raw/master/dlroutemap.user.js
 // @downloadURL  https://github.com/hfuller/user-js/raw/master/dlroutemap.user.js
-// @version      3
+// @version      4
 // @description  Make the route map not so... scrolly...
 // @author       Hunter Fuller <hfuller@pixilic.com>
 // @match        https://www.delta.com/*/route-map
@@ -28,13 +28,19 @@
             for ( let kid of el.firstChild.childNodes ) {
                 console.log(kid);
                 if ( kid.classList.contains('result-panel') ) {
-                    kid.classList = 'col-md-6 result-panel';
+                    kid.classList = 'col-md-4 result-panel';
                 } else {
-                    kid.classList = 'col-md-6';
+                    kid.classList = 'col-md-8';
                 }
                 kid.style.padding = "0px !important";
                 kid.style.margin = "0px !important";
             }
+
+            let map = document.getElementById("map");
+            let notmap = map.cloneNode();
+            notmap.id = "notmap";
+            notmap.style.display = "none";
+            map.parentElement.insertBefore(notmap, map);
         }
 
         for ( let el of document.getElementsByClassName('close') ) {
@@ -42,6 +48,9 @@
         }
 
         document.getElementsByClassName('search-button')[0].addEventListener('click', function() {
+            document.getElementById("notmap").style.display = "none";
+            document.getElementById("map").style.display = "block";
+
             console.log("Saving");
             localStorage.setItem('hfuller_origin', document.getElementById('Origin').value);
             localStorage.setItem('hfuller_destination', document.getElementById('Destination').value);
@@ -96,7 +105,9 @@
             flights.push(flight);
         }
         console.log(flights);
-        new Tabulator('#map', { data: flights, autoColumns: true });
+        new Tabulator('#notmap', { data: flights, autoColumns: true });
+        document.getElementById("map").style.display = "none";
+        document.getElementById("notmap").style.display = "block";
     };
 
 })();
