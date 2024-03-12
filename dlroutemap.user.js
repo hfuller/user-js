@@ -3,7 +3,7 @@
 // @namespace    http://github.com/hfuller/user-js
 // @updateURL    https://github.com/hfuller/user-js/raw/master/dlroutemap.user.js
 // @downloadURL  https://github.com/hfuller/user-js/raw/master/dlroutemap.user.js
-// @version      4
+// @version      5
 // @description  Make the route map not so... scrolly...
 // @author       Hunter Fuller <hfuller@pixilic.com>
 // @match        https://www.delta.com/*/route-map
@@ -107,7 +107,25 @@
         console.log(flights);
         new Tabulator('#notmap', { data: flights, autoColumns: true });
         document.getElementById("map").style.display = "none";
-        document.getElementById("notmap").style.display = "block";
+        let notmap = document.getElementById("notmap");
+        notmap.style.display = "block";
+        notmap.style.height = "100%";
+        setTimeout(function() {
+            for ( let el of document.getElementsByClassName("tabulator-tableholder") ) {
+                el.style.overflow = "scroll";
+                el.style.paddingBottom = "16px";
+            }
+        }, 1000);
+        let main = document.getElementsByTagName('main')[0];
+        main.style.margin = "0px";
+        main.style.position = "absolute";
+        main.style.top = "0px";
+        main.style.height = "100%";
+        main.style.background = "white";
+        main.style.zIndex = "1982347198";
+        for ( let el of document.getElementsByClassName("zoom-container") ) { el.style.display = "none"; }
+        for ( let el of document.getElementsByClassName("legend-box") ) { el.style.display = "none"; }
+
     };
 
 })();
