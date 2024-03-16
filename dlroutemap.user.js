@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         DL Route Map Optimizer
 // @namespace    http://github.com/hfuller/user-js
-// @updateURL    https://github.com/hfuller/user-js/raw/master/dlroutemap.user.js
-// @downloadURL  https://github.com/hfuller/user-js/raw/master/dlroutemap.user.js
+// @updateURL    https://github.com/hfuller/user-js/raw/main/dlroutemap.user.js
+// @downloadURL  https://github.com/hfuller/user-js/raw/main/dlroutemap.user.js
 // @version      5
 // @description  Make the route map not so... scrolly...
 // @author       Hunter Fuller <hfuller@pixilic.com>
